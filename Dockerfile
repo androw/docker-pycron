@@ -13,7 +13,6 @@ RUN apt-get update && \
     ffmpeg \
     imagemagick \
     gifsicle \
-    libav-tools \
     rsyslog \
     logrotate && \
     apt-get clean && \
