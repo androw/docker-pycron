@@ -34,11 +34,11 @@ def schedule_job(cron, job, config):
             at = config[CONFIG_AT]
             print("{}: {}".format(CONFIG_AT, at))
             if CONFIG_DAYS in at:
-                job.day.on(schedule[CONFIG_DAYS])
+                job.day.on(at[CONFIG_DAYS])
             elif CONFIG_HOURS in at:
-                job.hour.on(schedule[CONFIG_HOURS])
+                job.hour.on(at[CONFIG_HOURS])
             elif CONFIG_MINUTES in at:
-                job.minute.on(schedule[CONFIG_MINUTES])
+                job.minute.on(at[CONFIG_MINUTES])
             else:
                 print("Invalid entry {}".format(at))
         elif (method == CONFIG_SCHEDULE):
