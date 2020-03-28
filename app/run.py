@@ -7,7 +7,7 @@ from crontab import CronTab
 DEFAULT_WORK = '/work'
 DEFAULT_CONFIG = 'config.yaml'
 
-CONFIG_METHOD = "method"
+CONFIG_METHOD = "schedule or at"
 CONFIG_AT = 'at'
 CONFIG_SCHEDULE = 'schedule'
 CONFIG_ARGS = 'args'
@@ -29,29 +29,25 @@ def new_job(cron, filename, config):
 def schedule_job(cron, job, config):
     """Creates scheduling for jobs."""
     try:
-        method = config[CONFIG_METHOD]
-        if (method == CONFIG_AT):
+        if CONFIG_AT in config:
             at = config[CONFIG_AT]
             print("{}: {}".format(CONFIG_AT, at))
             if CONFIG_DAYS in at:
                 job.day.on(at[CONFIG_DAYS])
-            elif CONFIG_HOURS in at:
+            if CONFIG_HOURS in at:
                 job.hour.on(at[CONFIG_HOURS])
-            elif CONFIG_MINUTES in at:
+            if CONFIG_MINUTES in at:
                 job.minute.on(at[CONFIG_MINUTES])
-            else:
-                print("Invalid entry {}".format(at))
-        elif (method == CONFIG_SCHEDULE):
+    
+        if CONFIG_SCHEDULE in config:
             schedule = config[CONFIG_SCHEDULE]
             print("{}: {}".format(CONFIG_SCHEDULE, schedule))
             if CONFIG_DAYS in schedule:
                 job.every(schedule[CONFIG_DAYS]).days()
-            elif CONFIG_HOURS in schedule:
+            if CONFIG_HOURS in schedule:
                 job.every(schedule[CONFIG_HOURS]).hours()
-            elif CONFIG_MINUTES in schedule:
+            if CONFIG_MINUTES in schedule:
                 job.every(schedule[CONFIG_MINUTES]).minutes()
-            else:
-                print("Invalid entry {}".format(schedule))
 
     except KeyError:
         print("{} not found in {}".format(CONFIG_METHOD, DEFAULT_CONFIG))
