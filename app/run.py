@@ -7,6 +7,7 @@ from crontab import CronTab
 DEFAULT_WORK = '/work'
 DEFAULT_CONFIG = 'config.yaml'
 
+CONFIG_METHOD = "method"
 CONFIG_AT = 'at'
 CONFIG_SCHEDULE = 'schedule'
 CONFIG_ARGS = 'args'
@@ -28,19 +29,32 @@ def new_job(cron, filename, config):
 def schedule_job(cron, job, config):
     """Creates scheduling for jobs."""
     try:
-        schedule = config[CONFIG_SCHEDULE]
-        print("{}: {}".format(CONFIG_SCHEDULE, schedule))
-        if CONFIG_DAYS in schedule:
-            job.every(schedule[CONFIG_DAYS]).days()
-        elif CONFIG_HOURS in schedule:
-            job.every(schedule[CONFIG_HOURS]).hours()
-        elif CONFIG_MINUTES in schedule:
-            job.every(schedule[CONFIG_MINUTES]).minutes()
-        else:
-            print("Invalid entry {}".format(schedule))
+        method = config[CONFIG_METHOD]
+        if (method == CONFIG_AT):
+            at = config[CONFIG_AT]
+            print("{}: {}".format(CONFIG_AT, at))
+            if CONFIG_DAYS in at:
+                job.on(schedule[CONFIG_DAYS]).days()
+            elif CONFIG_HOURS in at:
+                job.on(schedule[CONFIG_HOURS]).hours()
+            elif CONFIG_MINUTES in at:
+                job.on(schedule[CONFIG_MINUTES]).minutes()
+            else:
+                print("Invalid entry {}".format(at))
+        elif (method == CONFIG_SCHEDULE):
+            schedule = config[CONFIG_SCHEDULE]
+            print("{}: {}".format(CONFIG_SCHEDULE, schedule))
+            if CONFIG_DAYS in schedule:
+                job.every(schedule[CONFIG_DAYS]).days()
+            elif CONFIG_HOURS in schedule:
+                job.every(schedule[CONFIG_HOURS]).hours()
+            elif CONFIG_MINUTES in schedule:
+                job.every(schedule[CONFIG_MINUTES]).minutes()
+            else:
+                print("Invalid entry {}".format(schedule))
 
     except KeyError:
-        print("{} not found in {}".format(CONFIG_SCHEDULE, DEFAULT_CONFIG))
+        print("{} not found in {}".format(CONFIG_METHOD, DEFAULT_CONFIG))
 
     cron.write()
 
